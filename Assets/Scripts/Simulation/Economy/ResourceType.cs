@@ -39,15 +39,15 @@ namespace CloudGarden.Economy
 
         static readonly string[] names =
         {
-            "Monedas", "Rocio", "Agua", "Polen", "Viento", "Nubes",
+            "Monedas", "Rocío", "Agua", "Polen", "Viento", "Nubes",
             "Cristales celestes", "Esencia celestial", "Productos",
-            "Fruta tropical", "Hielo", "Energia atmosferica"
+            "Fruta tropical", "Hielo", "Energía atmosférica"
         };
 
         static readonly string[] shortNames =
         {
-            "Monedas", "Rocio", "Agua", "Polen", "Viento", "Nubes",
-            "Cristal", "Esencia", "Producto", "Fruta", "Hielo", "Energia"
+            "Monedas", "Rocío", "Agua", "Polen", "Viento", "Nubes",
+            "Cristal", "Esencia", "Producto", "Fruta", "Hielo", "Energía"
         };
 
         // Commercial value in coins per unit.

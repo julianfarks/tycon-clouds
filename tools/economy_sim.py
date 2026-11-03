@@ -1,3 +1,7 @@
+"""Rough economy pacing simulator (greedy bot) that reads the real C# data tables.
+Usage: python3 tools/economy_sim.py [growthScale upgradeBase expansionMult regionMult researchMult hours]
+The bot is naive: use it to compare tunings, not as a promise of play time.
+"""
 import re,math,sys
 GS=float(sys.argv[1]) if len(sys.argv)>1 else 1.0
 UB=float(sys.argv[2]) if len(sys.argv)>2 else 1.55
@@ -6,7 +10,8 @@ REGM=float(sys.argv[4]) if len(sys.argv)>4 else 1.0
 RESM=float(sys.argv[5]) if len(sys.argv)>5 else 1.0
 HORIZON=float(sys.argv[6]) if len(sys.argv)>6 else 14
 
-root='/home/claude/tycon-clouds/Assets/Scripts/Simulation/'
+import os
+root=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','Assets','Scripts','Simulation')+os.sep
 RES=['Coins','Dew','Water','Pollen','Wind','Clouds','Crystals','Essence','Goods','Fruit','Ice','Energy']
 VAL=[1,1,4,6,3,10,30,400,55,18,40,70]
 R={n:i for i,n in enumerate(RES)}
