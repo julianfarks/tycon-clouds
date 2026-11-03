@@ -29,6 +29,30 @@ namespace CloudGarden.Progression
         public double AccCoins;
         public double RateTimer;
 
+        public void Reset()
+        {
+            BuildingsBuilt = 0;
+            BuildingsUpgraded = 0;
+            TradesCompleted = 0;
+            ManualCollects = 0;
+            MaxLevelReached = 1;
+            SoldCoins = 0;
+            OfflineSecondsTotal = 0;
+            PlaySeconds = 0;
+            Milestones.Clear();
+            EverBuilt.Clear();
+            for (int i = 0; i < ProdRate.Length; i++)
+            {
+                ProdRate[i] = 0;
+                ConsRate[i] = 0;
+                AccProd[i] = 0;
+                AccCons[i] = 0;
+            }
+            CoinRate = 0;
+            AccCoins = 0;
+            RateTimer = 0;
+        }
+
         public void Sanitize()
         {
             if (BuildingsBuilt < 0) BuildingsBuilt = 0;

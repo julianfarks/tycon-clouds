@@ -15,7 +15,7 @@ namespace CloudGarden.Progression
         public static int PendingStars(GameState s)
         {
             if (!s.Prestige.CampaignCompleted) return 0;
-            int stars = (int)Math.Floor(Math.Sqrt(s.Res.CoinsEarnedRun / 1e10));
+            int stars = (int)Math.Floor(Math.Sqrt(s.Res.CoinsEarnedRun / 2e8));
             return Math.Max(1, stars);
         }
 

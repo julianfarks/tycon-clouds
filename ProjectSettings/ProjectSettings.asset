@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 26
+  productGUID: 7a3c1f5e9b2d4c0a8e6f1d2b3c4a5968
+  defaultScreenOrientation: 4
+  companyName: julianfarks
+  productName: Cloud Garden Tycoon
+  m_ActiveColorSpace: 0
+  allowedAutorotateToPortrait: 0
+  allowedAutorotateToPortraitUpsideDown: 0
+  allowedAutorotateToLandscapeRight: 1
+  allowedAutorotateToLandscapeLeft: 1
+  useOSAutorotation: 1
+  runInBackground: 0
+  bundleVersion: 0.1.0
+  applicationIdentifier:
+    Android: com.julianfarks.cloudgardentycoon
+    Standalone: com.julianfarks.cloudgardentycoon
+  overrideDefaultApplicationIdentifier: 1
+  AndroidBundleVersionCode: 1
+  AndroidMinSdkVersion: 24
+  AndroidTargetArchitectures: 3
+  scriptingBackend:
+    Android: 1
+  activeInputHandler: 0

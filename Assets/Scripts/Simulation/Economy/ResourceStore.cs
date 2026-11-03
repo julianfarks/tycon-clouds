@@ -28,6 +28,21 @@ namespace CloudGarden.Economy
             ResetCapacities();
         }
 
+        public void ResetAll()
+        {
+            for (int i = 0; i < Amount.Length; i++)
+            {
+                Amount[i] = 0;
+                TotalProduced[i] = 0;
+                TotalConsumed[i] = 0;
+                TotalWasted[i] = 0;
+            }
+            CoinsEarnedRun = 0;
+            CoinsEarnedLifetime = 0;
+            CoinsSpentLifetime = 0;
+            ResetCapacities();
+        }
+
         public void ResetCapacities()
         {
             for (int i = 0; i < Capacity.Length; i++)

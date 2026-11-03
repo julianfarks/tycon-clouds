@@ -50,7 +50,7 @@ namespace CloudGarden.Buildings
         public static double UpgradeCost(double baseCost, int fromLevel)
         {
             fromLevel = Clamp(fromLevel);
-            return baseCost * 0.8 * Math.Pow(1.55, fromLevel);
+            return baseCost * 0.8 * Math.Pow(1.8, fromLevel);
         }
 
         /// <summary>Visual tier of the model: 0 (lvl 1-3), 1 (4-6), 2 (7-9), 3 (10).</summary>

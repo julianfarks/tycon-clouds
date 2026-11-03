@@ -42,7 +42,7 @@ namespace CloudGarden.Progression
             new Milestone("m17", "Destila tu primera esencia celestial", s => s.Res.TotalProduced[(int)ResourceType.Essence] >= 1),
             new Milestone("m18", "Enciende el Núcleo Climático", s => s.Stats.EverBuilt.Contains("climate_core")),
             new Milestone("m19", "Produce 500 de esencia celestial", s => s.Res.TotalProduced[(int)ResourceType.Essence] >= 500),
-            new Milestone("m20", "Gana 1 billón de monedas en total", s => s.Res.CoinsEarnedLifetime >= 1e12)
+            new Milestone("m20", "Gana 2.000 millones de monedas en total", s => s.Res.CoinsEarnedLifetime >= 2e9)
         };
 
         public static int Total { get { return Milestones.Length; } }

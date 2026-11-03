@@ -26,7 +26,7 @@ namespace CloudGarden.Tests
             Build(s, "dew_collector", 0, 0);
             Assert.AreEqual(0, s.Res.Get(ResourceType.Coins), 1e-9);
             double c2 = s.BuildCoinCost(BuildingDatabase.Get("dew_collector"));
-            Assert.AreEqual(15 * 1.10, c2, 1e-9);
+            Assert.AreEqual(15 * BuildingDatabase.Get("dew_collector").CostGrowth, c2, 1e-9);
             BuildingInstance b;
             Assert.AreEqual(PlaceResult.CannotAfford, s.TryBuild("dew_collector", 0, 2, 0, 0, out b));
             Assert.IsNull(b);
@@ -271,7 +271,7 @@ namespace CloudGarden.Tests
             Assert.IsTrue(s.RegionUnlocked[1]);
             Assert.AreEqual(0, s.Res.Get(ResourceType.Water), 1e-9);
             Assert.AreEqual(0, s.Res.Get(ResourceType.Pollen), 1e-9);
-            Assert.AreEqual(1e12 - 15000, s.Res.Get(ResourceType.Coins), 1);
+            Assert.AreEqual(1e12 - RegionDatabase.Get(1).UnlockCoins, s.Res.Get(ResourceType.Coins), 1);
             Assert.IsFalse(s.TryUnlockRegion(1));
         }
 
@@ -321,7 +321,7 @@ namespace CloudGarden.Tests
             Assert.IsFalse(PrestigeSystem.Rebirth(s));
 
             s.Prestige.CampaignCompleted = true;
-            s.Res.CoinsEarnedRun = 4e10;
+            s.Res.CoinsEarnedRun = 8e8;
             Assert.AreEqual(2, PrestigeSystem.PendingStars(s));
             GrantResearch(s, "distillation");
             Assert.IsTrue(PrestigeSystem.Rebirth(s));

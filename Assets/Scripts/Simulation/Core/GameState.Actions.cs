@@ -387,6 +387,18 @@ namespace CloudGarden.Core
             RaiseChanged();
         }
 
+        /// <summary>Deletes all progress and starts a brand new game (used by "Reiniciar partida").</summary>
+        public void HardReset()
+        {
+            Res.ResetAll();
+            Stats.Reset();
+            Prestige = new PrestigeState();
+            ResetToNewGame();
+            LastSaveUtcTicks = 0;
+            RaiseWorldReset();
+            RaiseChanged();
+        }
+
         /// <summary>Used by the save loader after replacing the model data.</summary>
         public void NotifyWorldReset()
         {

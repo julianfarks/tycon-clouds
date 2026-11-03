@@ -26,6 +26,10 @@ namespace CloudGarden.Buildings
             return d;
         }
 
+        /// <summary>Multiplier of (growth-1) for producer machines: owning many copies gets expensive quickly,
+        /// which pushes the player to upgrade, expand and move on to the next tier.</summary>
+        public const double ProducerGrowthScale = 2.5;
+
         static BuildingDatabase()
         {
             const BuildingCategory COL = BuildingCategory.Collection;
@@ -68,7 +72,7 @@ namespace CloudGarden.Buildings
                 .Desc("Refina cristales y agua en productos de alto valor.")
                 .Reg(2, "refining").Tr(6).Mat(R.Water, 400).In(R.Crystals, 1).In(R.Water, 2).Out(R.Goods, 3).Cycle(5).Vis("refinery", 0x7C6CF2, 0xC9BFFF));
 
-            Add(new BuildingDef("essence_lab", "Laboratorio de Esencia", PRO, 3, 3, 8000000).Growth(1.16)
+            Add(new BuildingDef("essence_lab", "Laboratorio de Esencia", PRO, 3, 3, 6000000).Growth(1.16)
                 .Desc("Combina cristales, polen, nubes y energia para obtener esencia celestial.")
                 .Reg(4, "essence_theory").Tr(7).Mat(R.Crystals, 500)
                 .In(R.Crystals, 2).In(R.Pollen, 3).In(R.Clouds, 2).In(R.Energy, 1).Out(R.Essence, 1).Cycle(8).Vis("lab", 0xFFC857, 0xFFF0C4));
@@ -111,11 +115,11 @@ namespace CloudGarden.Buildings
                 .Desc("Fabrica nubes a partir de viento, agua y hielo.")
                 .Reg(2, "cloud_engineering").Tr(4).In(R.Wind, 2).In(R.Water, 1).In(R.Ice, 1).Out(R.Clouds, 8).Cycle(5).Vis("cloudfactory", 0xF4F8FF, 0x8FB4E8));
 
-            Add(new BuildingDef("atmos_generator", "Generador Atmosferico", IND, 3, 3, 2000000).Growth(1.15)
+            Add(new BuildingDef("atmos_generator", "Generador Atmosferico", IND, 3, 3, 1200000).Growth(1.15)
                 .Desc("Transforma viento y nubes en energia atmosferica.")
                 .Reg(3, "atmospheric_energy").Tr(4).In(R.Wind, 2).In(R.Clouds, 1).Out(R.Energy, 4).Cycle(4).Vis("generator", 0xFFE04A, 0x6A7BA8));
 
-            Add(new BuildingDef("weather_factory", "Fabrica Meteorologica", IND, 3, 3, 6000000).Growth(1.16)
+            Add(new BuildingDef("weather_factory", "Fabrica Meteorologica", IND, 3, 3, 3500000).Growth(1.16)
                 .Desc("Domina las tormentas para forjar cristales celestes.")
                 .Reg(3, "meteorology").Tr(5).In(R.Energy, 2).In(R.Clouds, 2).In(R.Ice, 1).Out(R.Crystals, 8).Cycle(6).Vis("weather", 0x6A7BA8, 0xFFE04A));
 
@@ -152,12 +156,12 @@ namespace CloudGarden.Buildings
                 .Desc("Mejora las recompensas de comercio un 4% por nivel y atrae mas pedidos.")
                 .Reg(2, "communications").Tr(8).AsRole(BuildingRole.CommTower, 0.04).Max(1).Vis("tower", 0xFF8FA3, 0xF4F8FF));
 
-            Add(new BuildingDef("climate_core", "Nucleo Climatico", INF, 4, 4, 2000000000).Growth(1.3)
+            Add(new BuildingDef("climate_core", "Nucleo Climatico", INF, 4, 4, 250000000).Growth(1.3)
                 .Desc("El corazon del archipielago: +25% de produccion global por nivel.")
                 .Reg(4, "climate_core").Tr(8).Mat(R.Essence, 200).Mat(R.Crystals, 3000)
                 .AsRole(BuildingRole.ClimateCore, 0.25).Max(1).Vis("core", 0xB48CF2, 0xFFE04A));
 
-            Add(new BuildingDef("industrial_center", "Centro Industrial", INF, 4, 4, 90000000).Growth(1.25)
+            Add(new BuildingDef("industrial_center", "Centro Industrial", INF, 4, 4, 40000000).Growth(1.25)
                 .Desc("Acelera un 4% por nivel las fabricas y los procesadores.")
                 .Reg(3, "industrial_automation").Tr(8).AsRole(BuildingRole.IndustrialCenter, 0.04).Max(1).Vis("industrialcenter", 0xA8A8C8, 0xE48B4F));
 
@@ -165,6 +169,12 @@ namespace CloudGarden.Buildings
             Add(new BuildingDef("golden_collector", "Colector Dorado", COL, 2, 2, 1000000).Growth(1.35)
                 .Desc("Maquina especial del Renacimiento: acuna monedas del aire.")
                 .Reg(0, "").Prestige(5).Tr(0).Out(R.Coins, 2000).Cycle(10).Vis("golden", 0xFFC857, 0xFFF0C4));
+
+            for (int i = 0; i < all.Count; i++)
+            {
+                BuildingDef d = all[i];
+                if (d.IsProducer) d.CostGrowth = 1.0 + (d.CostGrowth - 1.0) * ProducerGrowthScale;
+            }
         }
     }
 }
