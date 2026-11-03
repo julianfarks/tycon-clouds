@@ -104,14 +104,25 @@ Resultado: `build/Android/CloudGardenTycoon.apk`. También en el menú **Cloud G
 ### En GitHub Actions
 `.github/workflows/build.yml` ejecuta en cada *push*: pruebas EditMode → compilación Android → verificación del APK (existe, no está vacío, contiene `AndroidManifest.xml`, SHA-256) → artefacto `CloudGardenTycoon-apk`.
 
-**Configuración necesaria (una sola vez)** en *Settings → Secrets and variables → Actions*:
+**Configuración necesaria (una sola vez) — licencia gratuita Unity Personal**
+
+1. Instala **Unity Hub** en tu PC e inicia sesión con tu cuenta de Unity.
+2. *Preferences → Licenses → Add → Get a free personal license* y completa el asistente.
+3. Localiza el archivo `Unity_lic.ulf` (activa "mostrar archivos ocultos"):
+   - Windows: `C:\ProgramData\Unity\Unity_lic.ulf`
+   - macOS: `/Library/Application Support/Unity/Unity_lic.ulf`
+   - Linux: `~/.local/share/unity3d/Unity/Unity_lic.ulf`
+4. En GitHub: repo → *Settings → Secrets and variables → Actions → New repository secret* y crea **tres** secretos:
 
 | Secreto | Valor |
 |---|---|
-| `UNITY_LICENSE` | contenido del archivo `.ulf` de tu licencia (ver [game.ci/docs/github/activation](https://game.ci/docs/github/activation)) |
-| `UNITY_EMAIL`, `UNITY_PASSWORD` | alternativa para cuentas que lo permitan |
+| `UNITY_LICENSE` | todo el contenido del archivo `Unity_lic.ulf` (ábrelo con el Bloc de notas, copia y pega) |
+| `UNITY_EMAIL` | el email de tu cuenta Unity |
+| `UNITY_PASSWORD` | la contraseña de tu cuenta Unity |
 
-Sin esos secretos los trabajos de Unity se omiten con un aviso (no fallan).
+5. *Actions → Build Android (Unity 6) → Run workflow* (marca **release** para publicar el APK en Releases).
+
+Sin esos secretos el primer trabajo **falla a propósito** con un mensaje claro; ningún trabajo de Unity se da por bueno si no se ejecutó.
 
 ### Release de prueba con el APK
 - Crea una etiqueta: `git tag v0.1.0 && git push origin v0.1.0` → la CI compila y publica un *release* con el APK adjunto.

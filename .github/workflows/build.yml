@@ -17,9 +17,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # The Unity license is a secret. Without it the Unity jobs are skipped (with a warning) instead of failing.
+  # The Unity license is a secret. Without it this job FAILS on purpose, so a missing license is never mistaken for a green build.
   check-secrets:
-    name: Check Unity license secrets
+    name: Check Unity license secrets (fails if missing)
     runs-on: ubuntu-latest
     outputs:
       ready: ${{ steps.check.outputs.ready }}
@@ -30,12 +30,15 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         run: |
-          if [ -n "$UNITY_LICENSE" ] || { [ -n "$UNITY_EMAIL" ] && [ -n "$UNITY_PASSWORD" ]; }; then
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "::warning title=Unity license missing::Add the UNITY_LICENSE (or UNITY_EMAIL + UNITY_PASSWORD) repository secrets to enable tests and APK builds. See README.md > CI."
+          if [ -z "$UNITY_LICENSE" ]; then
+            echo "::error title=Falta el secreto UNITY_LICENSE::No se puede compilar sin licencia de Unity. Crea los secretos UNITY_LICENSE, UNITY_EMAIL y UNITY_PASSWORD (README > CI)."
+            exit 1
           fi
+          if [ -z "$UNITY_EMAIL" ] || [ -z "$UNITY_PASSWORD" ]; then
+            echo "::error title=Faltan UNITY_EMAIL / UNITY_PASSWORD::game-ci los necesita junto con UNITY_LICENSE."
+            exit 1
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
 
   test:
     name: EditMode tests
@@ -71,7 +74,8 @@ jobs:
   build:
     name: Android APK
     needs: [ check-secrets, test ]
-    if: needs.check-secrets.outputs.ready == 'true'
+    # The APK is built even if a test fails, so a build is always obtainable; the test job still reports its own result.
+    if: ${{ !cancelled() && needs.check-secrets.outputs.ready == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.ver.outputs.version }}
@@ -116,6 +120,15 @@ jobs:
           version: ${{ steps.ver.outputs.version }}
           androidVersionCode: ${{ github.run_number }}
           allowDirtyBuild: true
+      - name: Upload Unity log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-build-log
+          path: |
+            build/**/*.log
+            *.log
+          if-no-files-found: ignore
       - name: Verify APK
         run: |
           set -e
